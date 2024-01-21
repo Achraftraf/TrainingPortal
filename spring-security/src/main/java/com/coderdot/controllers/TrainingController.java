@@ -26,18 +26,11 @@ public class TrainingController {
     @Autowired
     private TrainingService trainingService;
 
-    
-//    @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/add")
-//    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Training> addTraining(@RequestBody Training training) {
         try {
-            // Ensure that the authenticated user has the 'ROLE_ADMIN' authority
-//            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//            if (!authentication.getAuthorities().stream().anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"))) {
-//                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-//            }
-
+            // No need to manually check role here; @PreAuthorize handles it
             Training addedTraining = trainingService.addTraining(training);
             return new ResponseEntity<>(addedTraining, HttpStatus.CREATED);
         } catch (Exception e) {
@@ -47,17 +40,16 @@ public class TrainingController {
         }
     }
 
-
     @GetMapping("/all")
+    @PreAuthorize("hasRole('ROLE_USER')") // Adjust role based on your use case
     public ResponseEntity<List<Training>> getAllTrainings() {
         List<Training> allTrainings = trainingService.getAllTrainings();
         return new ResponseEntity<>(allTrainings, HttpStatus.OK);
     }    
-   
-    
+
     @GetMapping("/message")
     public ResponseEntity<String> hello() {
-        return new ResponseEntity<String>("Hello world", HttpStatus.OK);
+        return new ResponseEntity<>("Hello world", HttpStatus.OK);
     }
 
     // Additional endpoints as needed

@@ -17,17 +17,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/login")
 public class LoginController {
 
     private final AuthenticationManager authenticationManager;
-
     private final CustomerServiceImpl customerService;
-
     private final JwtUtil jwtUtil;
-
 
     @Autowired
     public LoginController(AuthenticationManager authenticationManager, CustomerServiceImpl customerService, JwtUtil jwtUtil) {
@@ -46,10 +44,11 @@ public class LoginController {
             response.sendError(HttpServletResponse.SC_NOT_FOUND, "Customer is not activated");
             return null;
         }
+
         final UserDetails userDetails = customerService.loadUserByUsername(loginRequest.getEmail());
-        final String jwt = jwtUtil.generateToken(userDetails.getUsername());
+        Set<String> roles = customerService.getRoles(userDetails.getUsername());
+        final String jwt = jwtUtil.generateToken(userDetails.getUsername(), roles);
 
         return new LoginResponse(jwt);
     }
-
 }
