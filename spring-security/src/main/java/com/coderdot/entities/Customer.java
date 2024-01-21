@@ -25,12 +25,12 @@ public class Customer {
     private String password;
 
     private String email;
-    
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "customer_roles", joinColumns = @JoinColumn(name = "id"))
     @Enumerated(EnumType.STRING)
     private Set<Role> roles = new HashSet<>();
+
     public Long getId() {
         return id;
     }
@@ -62,7 +62,7 @@ public class Customer {
     public void setEmail(String email) {
         this.email = email;
     }
-    
+
     public Set<Role> getRoles() {
         return roles;
     }
@@ -70,11 +70,11 @@ public class Customer {
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
-    
+
     public enum Role {
         ROLE_USER,
-        ROLE_ADMIN
+        ROLE_ADMIN,
+        ROLE_FORMATEUR // Add the new role
         // Add more roles as needed
     }
-
 }
