@@ -1,8 +1,10 @@
 package com.coderdot.controllers;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.coderdot.entities.Training;
@@ -41,12 +44,25 @@ public class TrainingController {
     }
 
     @GetMapping("/all")
-    @PreAuthorize("hasRole('ROLE_USER')") // Adjust role based on your use case
+    @PreAuthorize("hasRole('ROLE_ADMIN')") // Adjust role based on your use case
     public ResponseEntity<List<Training>> getAllTrainings() {
         List<Training> allTrainings = trainingService.getAllTrainings();
         return new ResponseEntity<>(allTrainings, HttpStatus.OK);
     }    
 
+    
+    @GetMapping("/filtered")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<List<Training>> getFilteredTrainings(
+        @RequestParam(required = false) String category,
+        @RequestParam(required = false) String city,
+        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+        List<Training> filteredTrainings = trainingService.getFilteredTrainings(category, city, date);
+        return new ResponseEntity<>(filteredTrainings, HttpStatus.OK);
+    }
+
+    
+    
     @GetMapping("/message")
     public ResponseEntity<String> hello() {
         return new ResponseEntity<>("Hello world", HttpStatus.OK);

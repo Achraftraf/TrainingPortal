@@ -3,8 +3,7 @@ package com.coderdot.entities;
 
 
 import java.math.BigDecimal;
-
-
+import java.time.LocalDate;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -29,5 +28,9 @@ public class Training {
     private BigDecimal cost;
     private String objectives;
     private String detailedProgram;
+    
+    private String category;
+    private String city;
+    private LocalDate date;
 }
 
