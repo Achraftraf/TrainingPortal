@@ -5,6 +5,8 @@ import java.time.LocalDate;
 
 import org.hibernate.annotations.Where;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -23,12 +25,20 @@ public class TrainingSchedule {
 
     @OneToOne	
     @JoinColumn(name = "training_id")
+    @JsonBackReference
     private Training training;
     
+   
+
+//    @ManyToOne
+//    @JoinColumn(name = "trainer_id", referencedColumnName = "id", insertable = false, updatable = false)
+//    @Where(clause = "trainer_id IN (SELECT c.id FROM customer c JOIN customer_roles cr ON c.id = cr.id WHERE cr.roles = 'ROLE_FORMATEUR')")
+//    private Customer trainer;
+    
     @ManyToOne
-    @JoinColumn(name = "trainer_id", referencedColumnName = "id", insertable = false, updatable = false)
-    @Where(clause = "trainer_id IN (SELECT c.id FROM customer c JOIN customer_roles cr ON c.id = cr.id WHERE cr.roles = 'ROLE_FORMATEUR')")
+    @JoinColumn(name = "trainer_id")
     private Customer trainer;
+
 
     @ManyToOne
     @JoinColumn(name = "enterprise_id")

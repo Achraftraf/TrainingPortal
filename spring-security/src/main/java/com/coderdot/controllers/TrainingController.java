@@ -71,6 +71,7 @@ public class TrainingController {
         return new ResponseEntity<>(allTrainings, HttpStatus.OK);
     }    
 
+
     
 //    @GetMapping("/filtered")
 //    @PreAuthorize("hasRole('ROLE_ADMIN')")

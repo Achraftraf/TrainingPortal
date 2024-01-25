@@ -31,6 +31,7 @@ public class Customer {
     @Enumerated(EnumType.STRING)
     private Set<Role> roles = new HashSet<>();
 
+
     public Long getId() {
         return id;
     }

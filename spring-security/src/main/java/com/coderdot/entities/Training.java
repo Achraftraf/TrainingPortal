@@ -5,8 +5,11 @@ package com.coderdot.entities;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -40,8 +43,10 @@ public class Training {
     @JoinColumn(name = "enterprise_id")
     private Entreprise enterprise;
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "training")
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "training", fetch = FetchType.LAZY)
+    @JsonManagedReference
     private TrainingSchedule schedule;
+
 
 }
 
