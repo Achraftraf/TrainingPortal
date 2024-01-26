@@ -7,6 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TrainingScheduleRepository extends JpaRepository<TrainingSchedule, Long> {
-    // You can add custom query methods here if needed
+    // Add any custom queries if needed
 }
-

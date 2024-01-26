@@ -122,43 +122,43 @@ public class TrainingController {
 //
 //    
     
-    @PostMapping("/schedule")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<String> scheduleTraining(
-            @RequestBody TrainingSchedule trainingSchedule,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
-            @RequestParam Long trainerId,
-            @RequestParam Long enterpriseId) {
-        try {
-            // Fetch the trainer and enterprise from the repository based on provided IDs
-            Customer trainer = customerRepository.findById(trainerId)
-                    .orElseThrow(() -> new IllegalArgumentException("Trainer not found"));
-            Entreprise enterprise = entrepriseRepository.findById(enterpriseId)
-                    .orElseThrow(() -> new IllegalArgumentException("Enterprise not found"));
-
-            // Fetch an existing Training from the database (you might want to modify this based on your actual logic)
-            // For example, if you have a TrainingRepository, you can fetch it like this:
-            Training existingTraining = trainingRepository.findById(trainingSchedule.getTraining().getId())
-                    .orElseThrow(() -> new IllegalArgumentException("Training not found"));
-
-            // Set the necessary information for scheduling
-            trainingSchedule.setDate(date);
-            trainingSchedule.setTrainer(trainer);
-            trainingSchedule.setEnterprise(enterprise);
-            trainingSchedule.setTraining(existingTraining); // Set the existing training
-
-            // Call the service method to schedule the training
-            trainingService.scheduleTraining(trainingSchedule);
-
-            return ResponseEntity.ok("Training scheduled successfully");
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        } catch (Exception e) {
-            e.printStackTrace(); // Log the exception details
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
+//    @PostMapping("/schedule")
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
+//    public ResponseEntity<String> scheduleTraining(
+//            @RequestBody TrainingSchedule trainingSchedule,
+//            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
+//            @RequestParam Long trainerId,
+//            @RequestParam Long enterpriseId) {
+//        try {
+//            // Fetch the trainer and enterprise from the repository based on provided IDs
+//            Customer trainer = customerRepository.findById(trainerId)
+//                    .orElseThrow(() -> new IllegalArgumentException("Trainer not found"));
+//            Entreprise enterprise = entrepriseRepository.findById(enterpriseId)
+//                    .orElseThrow(() -> new IllegalArgumentException("Enterprise not found"));
+//
+//            // Fetch an existing Training from the database (you might want to modify this based on your actual logic)
+//            // For example, if you have a TrainingRepository, you can fetch it like this:
+//            Training existingTraining = trainingRepository.findById(trainingSchedule.getTraining().getId())
+//                    .orElseThrow(() -> new IllegalArgumentException("Training not found"));
+//
+//            // Set the necessary information for scheduling
+//            trainingSchedule.setDate(date);
+//            trainingSchedule.setTrainer(trainer);
+//            trainingSchedule.setEnterprise(enterprise);
+//            trainingSchedule.setTraining(existingTraining); // Set the existing training
+//
+//            // Call the service method to schedule the training
+//            trainingService.scheduleTraining(trainingSchedule);
+//
+//            return ResponseEntity.ok("Training scheduled successfully");
+//        } catch (IllegalArgumentException e) {
+//            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+//        } catch (Exception e) {
+//            e.printStackTrace(); // Log the exception details
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//    }
+//
 
     @GetMapping("/message")
     public ResponseEntity<String> hello() {

@@ -15,7 +15,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 
-//TrainingSchedule.java
 @Entity
 public class TrainingSchedule {
 
@@ -23,47 +22,20 @@ public class TrainingSchedule {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne	
-    @JoinColumn(name = "training_id")
-    @JsonBackReference
-    private Training training;
-    
-   
-
-//    @ManyToOne
-//    @JoinColumn(name = "trainer_id", referencedColumnName = "id", insertable = false, updatable = false)
-//    @Where(clause = "trainer_id IN (SELECT c.id FROM customer c JOIN customer_roles cr ON c.id = cr.id WHERE cr.roles = 'ROLE_FORMATEUR')")
-//    private Customer trainer;
-    
     @ManyToOne
     @JoinColumn(name = "trainer_id")
     private Customer trainer;
-
 
     @ManyToOne
     @JoinColumn(name = "enterprise_id")
     private Entreprise enterprise;
 
-
     private LocalDate date;
-
-	public LocalDate getDate() {
-		return date;
-	}
-
-	public void setDate(LocalDate date) {
-		this.date = date;
-	}
-	 
-	
-
-    public Training getTraining() {
-        return training;
-    }
-
-    public void setTraining(Training training) {
-        this.training = training;
-    }
+    
+    @JsonBackReference
+    @ManyToOne // Assuming a Many-to-One relationship with Training
+    @JoinColumn(name = "training_id") // Adjust the column name based on your actual database schema
+    private Training training;
 
     public Customer getTrainer() {
         return trainer;
@@ -81,7 +53,23 @@ public class TrainingSchedule {
         this.enterprise = enterprise;
     }
 
- 
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    
+    public void setTraining(Training training) {
+        this.training = training;
+    }
+    
+    public Training getTraining() {
+        return training;
+    }
+
+}
 
     // Constructors, getters, setters, etc.
-}
