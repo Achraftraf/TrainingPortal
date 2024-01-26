@@ -6,13 +6,14 @@ import com.coderdot.services.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/signup")
+
 public class SignupController {
 
     private final AuthService authService;
@@ -22,13 +23,25 @@ public class SignupController {
         this.authService = authService;
     }
 
-    @PostMapping
+    @PostMapping("/signup") 
     public ResponseEntity<?> signupCustomer(@RequestBody SignupRequest signupRequest) {
         Customer createdCustomer = authService.createCustomer(signupRequest);
         if (createdCustomer != null) {
             return ResponseEntity.status(HttpStatus.CREATED).body(createdCustomer);
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to create customer");
+        }
+    }
+    
+    @PostMapping("/admin/trainer") 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> signupTrainer(@RequestBody SignupRequest signupRequest) {
+    	 System.out.println("Received request to signup trainer");
+        Customer createdTrainer = authService.createTrainer(signupRequest);
+        if (createdTrainer != null) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(createdTrainer);
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to create trainer");
         }
     }
 
