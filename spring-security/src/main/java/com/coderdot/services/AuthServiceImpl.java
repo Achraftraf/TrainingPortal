@@ -6,6 +6,8 @@ import com.coderdot.entities.Customer.Role;
 import com.coderdot.repository.CustomerRepository;
 
 import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.BeanUtils;
@@ -79,5 +81,15 @@ public class AuthServiceImpl implements AuthService {
         // Set the ID and return the created trainer
         createdTrainer.setId(createdTrainer.getId());
         return createdTrainer;
+    }
+
+	@Override
+	 public List<Customer> getCustomersByRole(Role role) {
+        return customerRepository.findByRolesContaining(role);
+    }
+	
+	@Override
+    public Optional<Customer> getFormateurById(Long id) {
+        return customerRepository.findByIdAndRoles(id, Role.ROLE_FORMATEUR);
     }
 }

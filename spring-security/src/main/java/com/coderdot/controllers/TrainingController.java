@@ -8,6 +8,7 @@ import com.coderdot.repository.TrainingRepository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -19,6 +20,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,7 +34,7 @@ import com.coderdot.entities.Entreprise;
 import com.coderdot.entities.Training;
 
 @RestController
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("/api/trainings")
 public class TrainingController {
 
@@ -71,7 +73,29 @@ public class TrainingController {
         return new ResponseEntity<>(allTrainings, HttpStatus.OK);
     }    
 
+    @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> getTrainingById(@PathVariable Long id) {
+        Optional<Training> training = trainingService.getTrainingById(id);
 
+        if (training.isPresent()) {
+            return ResponseEntity.ok(training.get());
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Training not found");
+        }
+    }
+    
+    @GetMapping("/schedule/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> getTrainingByTrainingScheduleId(@PathVariable Long id) {
+        Optional<Training> training = trainingService.getTrainingByTrainingScheduleId(id);
+
+        if (training.isPresent()) {
+            return ResponseEntity.ok(training.get());
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Training not found for the given TrainingSchedule ID");
+        }
+    }
     
 //    @GetMapping("/filtered")
 //    @PreAuthorize("hasRole('ROLE_ADMIN')")

@@ -17,7 +17,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("/api/training-schedules")
 public class TrainingScheduleController {
 
@@ -42,6 +42,13 @@ public class TrainingScheduleController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    
+    @GetMapping("/all")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public List<TrainingSchedule> getAllTrainingSchedules() {
+        return trainingService.getAllTrainingSchedules();
+    }
+
 
     // Additional methods if needed...
 }

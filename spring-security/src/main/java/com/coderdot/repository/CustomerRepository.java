@@ -26,4 +26,8 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
 	 @Query("SELECT c FROM Customer c WHERE c.id = :id AND :role MEMBER OF c.roles")
 	    Optional<Customer> findByIdAndRoles(@Param("id") Long id, @Param("role") Customer.Role role);
 
+	 
+	
+
+	    List<Customer> findByRolesContaining(Customer.Role role);
 }
