@@ -69,6 +69,9 @@ public class TrainingSchedule {
     public Training getTraining() {
         return training;
     }
+    public Long getId() {
+        return id;
+    }
 
 }
 

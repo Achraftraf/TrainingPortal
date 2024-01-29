@@ -49,6 +49,28 @@ public class TrainingScheduleController {
         return trainingService.getAllTrainingSchedules();
     }
 
+    
+    @PutMapping("/update-date")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<String> updateTrainingScheduleDate(@RequestBody TrainingSchedule updateRequest) {
+        try {
+            // Log the received update request
+            System.out.println("Received Training Schedule Update Request: " + updateRequest);
+
+            // Call the service method to update the training schedule date
+            trainingService.updateTrainingScheduleDate(updateRequest);
+            System.out.println("Received Training Schedule Update Request: " + updateRequest);
+            System.out.println("Updated Date: " + updateRequest.getDate());
+
+            return ResponseEntity.ok("Training schedule date updated successfully");
+            
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            e.printStackTrace(); // Log the exception details
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
     // Additional methods if needed...
 }
