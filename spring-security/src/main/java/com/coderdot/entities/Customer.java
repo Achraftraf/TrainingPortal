@@ -84,7 +84,7 @@ public class Customer {
     public enum Role {
         ROLE_USER,
         ROLE_ADMIN,
-        ROLE_FORMATEUR // Add the new role
-        // Add more roles as needed
+        ROLE_FORMATEUR,
+        ROLE_ASSISTANT
     }
 }

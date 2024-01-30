@@ -4,6 +4,7 @@ package com.coderdot.entities;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -15,6 +16,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -46,6 +48,10 @@ public class Training {
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "training", fetch = FetchType.LAZY)
     @JsonManagedReference
     private TrainingSchedule schedule;
+    
+    @OneToMany(mappedBy = "training", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<TrainingParticipant> participants;
 
 
 }

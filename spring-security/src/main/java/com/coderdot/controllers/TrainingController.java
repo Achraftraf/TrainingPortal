@@ -22,12 +22,14 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.coderdot.entities.Training;
+import com.coderdot.entities.TrainingParticipant;
 import com.coderdot.entities.TrainingSchedule;
 import com.coderdot.services.TrainingService;
 import com.coderdot.entities.Entreprise;
@@ -67,14 +69,14 @@ public class TrainingController {
     }
 
     @GetMapping("/all")
-    @PreAuthorize("hasRole('ROLE_ADMIN')") // Adjust role based on your use case
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_ASSISTANT')")
     public ResponseEntity<List<Training>> getAllTrainings() {
         List<Training> allTrainings = trainingService.getAllTrainings();
         return new ResponseEntity<>(allTrainings, HttpStatus.OK);
     }    
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_ASSISTANT')")
     public ResponseEntity<?> getTrainingById(@PathVariable Long id) {
         Optional<Training> training = trainingService.getTrainingById(id);
 
@@ -86,7 +88,7 @@ public class TrainingController {
     }
     
     @GetMapping("/schedule/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_ASSISTANT')")
     public ResponseEntity<?> getTrainingByTrainingScheduleId(@PathVariable Long id) {
         Optional<Training> training = trainingService.getTrainingByTrainingScheduleId(id);
 
@@ -187,6 +189,28 @@ public class TrainingController {
     @GetMapping("/message")
     public ResponseEntity<String> hello() {
         return new ResponseEntity<>("Hello world", HttpStatus.OK);
+    }
+    
+    
+    @PutMapping("/{id}/register")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public ResponseEntity<String> registerForTraining(@PathVariable Long id, @RequestBody TrainingParticipant participant) {
+        try {
+            Optional<Training> optionalTraining = trainingService.getTrainingById(id);
+            if (optionalTraining.isPresent()) {
+                Training training = optionalTraining.get();
+                List<TrainingParticipant> participants = training.getParticipants();
+                participants.add(participant);
+                training.setParticipants(participants);
+                trainingRepository.save(training);
+                return ResponseEntity.ok("Successfully registered for training");
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Training not found");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     // Additional endpoints as needed
