@@ -23,6 +23,8 @@ public class FormateurService {
 	@Autowired
     private CustomerRepository customerRepository;
 	
+	@Autowired
+    private JavaMailSender javaMailSender;
 
     public Formateur inscrireFormateur(Formateur formateur) {
     	 if (formateur.getStatus() == null) {
@@ -68,9 +70,28 @@ public class FormateurService {
     }
 
     private void sendAcceptanceEmail(String formateurEmail) {
+    	
+    	try {
+            MimeMessage message = javaMailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+            helper.setTo(formateurEmail);
+            helper.setSubject("Your Formateur Application has been Accepted");
+            helper.setText("Dear Formateur, your application has been accepted. Welcome!");
+
+            javaMailSender.send(message);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
     }
     private void sendRejectionEmail(String formateurEmail) {
 
+       	SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(formateurEmail);
+        message.setSubject("Your Formateur Application has been Rejected");
+        message.setText("Dear Formateur, unfortunately, your application has been rejected.");
+
+        javaMailSender.send(message);
     }
     
     public List<Formateur> getAllFormateurs() {
