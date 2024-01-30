@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,17 +21,19 @@ import com.coderdot.entities.Formateur;
 import com.coderdot.services.FormateurService;
 
 @RestController
-//@RequestMapping("/api/formateurs")
 @CrossOrigin(origins = "*")
 public class FormateurController {
 
 	@Autowired
 	private FormateurService formateurService;
+	private static final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 	
 	@PostMapping("/inscrire")
 	public ResponseEntity<Formateur> inscrireFormateur(@RequestBody Formateur formateur) {
-     Formateur inscritFormateur = formateurService.inscrireFormateur(formateur);
-     return new ResponseEntity<>(inscritFormateur, HttpStatus.CREATED);
+		formateur.setPassword(passwordEncoder.encode(formateur.getPassword()));
+		Formateur inscritFormateur = formateurService.inscrireFormateur(formateur);
+     
+		return new ResponseEntity<>(inscritFormateur, HttpStatus.CREATED);
 	}
 	 @GetMapping("/api/fuser/all")
 	 @PreAuthorize("hasRole('ROLE_ADMIN')")
