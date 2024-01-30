@@ -25,7 +25,7 @@ public class TrainingScheduleController {
     private TrainingService trainingService;
 
     @PostMapping("/schedule")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_ASSISTANT')")
     public ResponseEntity<String> scheduleTraining(@RequestBody TrainingSchedule trainingSchedule) {
         try {
             // Log the received training schedule
@@ -44,14 +44,14 @@ public class TrainingScheduleController {
     }
     
     @GetMapping("/all")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_ASSISTANT')")
     public List<TrainingSchedule> getAllTrainingSchedules() {
         return trainingService.getAllTrainingSchedules();
     }
 
     
     @PutMapping("/update-date")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_ASSISTANT')")
     public ResponseEntity<String> updateTrainingScheduleDate(@RequestBody TrainingSchedule updateRequest) {
         try {
             // Log the received update request
