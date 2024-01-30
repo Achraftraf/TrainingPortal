@@ -25,8 +25,17 @@ public class Customer {
     private String password;
 
     private String email;
+    private String skills;
 
-    @ElementCollection(fetch = FetchType.EAGER)
+    public String getSkills() {
+		return skills;
+	}
+
+	public void setSkills(String skills) {
+		this.skills = skills;
+	}
+
+	@ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "customer_roles", joinColumns = @JoinColumn(name = "id"))
     @Enumerated(EnumType.STRING)
     private Set<Role> roles = new HashSet<>();

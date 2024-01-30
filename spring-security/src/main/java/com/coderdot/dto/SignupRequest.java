@@ -9,6 +9,7 @@ public class SignupRequest {
     private String email;
     private String name;
     private String password;
+    private String skills; 
 
     public String getEmail() {
         return email;
@@ -32,6 +33,14 @@ public class SignupRequest {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+    
+    public String getSkills() {
+        return skills;
+    }
+
+    public void setSkills(String skills) {
+        this.skills = skills;
     }
 
     // Correct implementation of getRoles method
