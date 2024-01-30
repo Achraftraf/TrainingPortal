@@ -70,6 +70,8 @@ public class AuthServiceImpl implements AuthService {
 
         // Set role to ROLE_FORMATEUR for trainers
         trainer.setRoles(Collections.singleton(Role.ROLE_FORMATEUR));
+        
+        trainer.setSkills(signupRequest.getSkills());
 
         // Hash the password before saving
         String hashPassword = passwordEncoder.encode(signupRequest.getPassword());
