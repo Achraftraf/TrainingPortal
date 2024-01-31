@@ -37,7 +37,6 @@ import com.coderdot.entities.Training;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
-@RequestMapping("/api/trainings")
 public class TrainingController {
 
     @Autowired
@@ -54,7 +53,7 @@ public class TrainingController {
     private TrainingRepository trainingRepository;
 
     
-    @PostMapping("/add")
+    @PostMapping("/api/trainings/add")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Training> addTraining(@RequestBody Training training) {
         try {
@@ -68,14 +67,14 @@ public class TrainingController {
         }
     }
 
-    @GetMapping("/all")
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_ASSISTANT')")
+    @GetMapping("/api/trainingsforall/all")
+//    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_ASSISTANT')")
     public ResponseEntity<List<Training>> getAllTrainings() {
         List<Training> allTrainings = trainingService.getAllTrainings();
         return new ResponseEntity<>(allTrainings, HttpStatus.OK);
     }    
 
-    @GetMapping("/{id}")
+    @GetMapping("/api/trainings/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_ASSISTANT')")
     public ResponseEntity<?> getTrainingById(@PathVariable Long id) {
         Optional<Training> training = trainingService.getTrainingById(id);
@@ -87,7 +86,7 @@ public class TrainingController {
         }
     }
     
-    @GetMapping("/schedule/{id}")
+    @GetMapping("/api/trainings/schedule/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_ASSISTANT')")
     public ResponseEntity<?> getTrainingByTrainingScheduleId(@PathVariable Long id) {
         Optional<Training> training = trainingService.getTrainingByTrainingScheduleId(id);
@@ -192,7 +191,7 @@ public class TrainingController {
     }
     
     
-    @PutMapping("/{id}/register")
+    @PutMapping("/api/trainings/{id}/register")
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<String> registerForTraining(@PathVariable Long id, @RequestBody TrainingParticipant participant) {
         try {

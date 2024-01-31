@@ -4,6 +4,9 @@ import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import com.coderdot.entities.Customer;
@@ -12,6 +15,9 @@ import com.coderdot.entities.Formateur;
 import com.coderdot.entities.Formateur.Status;
 import com.coderdot.repository.CustomerRepository;
 import com.coderdot.repository.FormateurRepository;
+
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 
 
 @Service
