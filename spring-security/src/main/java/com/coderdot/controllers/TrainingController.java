@@ -256,7 +256,7 @@ import java.util.Optional;
 	    }
 
 
-	    @PutMapping("/api/trainings /associate-formateur/{trainingId}/{formateurId}")
+	    @PutMapping("/api/trainings/associate-formateur/{trainingId}/{formateurId}")
 	    @PreAuthorize("hasRole('ROLE_ADMIN')")
 	    public ResponseEntity<String> associateFormateurToTraining(
 	            @PathVariable Long trainingId,
