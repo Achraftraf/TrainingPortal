@@ -1,6 +1,7 @@
 package com.coderdot.services.jwt;
 
 import com.coderdot.entities.Customer;
+import com.coderdot.entities.Customer.Role;
 import com.coderdot.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -49,4 +51,8 @@ public class CustomerServiceImpl implements UserDetailsService {
                 .map(Customer.Role::name)
                 .collect(Collectors.toSet());
     }
+    
+    
+    
+   
 }

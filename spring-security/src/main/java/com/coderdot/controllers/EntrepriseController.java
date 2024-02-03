@@ -19,7 +19,7 @@ public class EntrepriseController {
     private EntrepriseService entrepriseService;
 
     @PostMapping("/add")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_ASSISTANT')")
     public ResponseEntity<Entreprise> ajouterEntreprise(@RequestBody Entreprise entreprise) {
         try {
             Entreprise ajouterEntreprise = entrepriseService.addEntreprise(entreprise);
@@ -32,7 +32,7 @@ public class EntrepriseController {
     }
 
     @GetMapping("/all")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_ASSISTANT')")
     public ResponseEntity<List<Entreprise>> getAllEntreprises() {
         List<Entreprise> entreprises = entrepriseService.getAllEntreprises();
         return new ResponseEntity<>(entreprises, HttpStatus.OK);
