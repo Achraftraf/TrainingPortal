@@ -36,4 +36,8 @@ public class TrainingParticipant {
     @JsonBackReference
     private Training training;
 
+    
+    @ManyToOne
+    @JoinColumn(name = "formateur_id")
+    private Customer formateur;
 }
