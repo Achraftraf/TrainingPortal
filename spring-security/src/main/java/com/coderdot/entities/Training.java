@@ -53,6 +53,9 @@ public class Training {
     @JsonManagedReference
     private List<TrainingParticipant> participants;
 
+    @ManyToOne
+    @JoinColumn(name = "formateur_id")
+    private Customer formateur;
 
 }
 
