@@ -21,50 +21,50 @@ import com.coderdot.entities.Formateur;
 import com.coderdot.services.FormateurService;
 
 @RestController
+//@RequestMapping("/api/fuser")
 @CrossOrigin(origins = "*")
 public class FormateurController {
 
-	@Autowired
-	private FormateurService formateurService;
-	private static final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-	
-	@PostMapping("/inscrire")
-	public ResponseEntity<Formateur> inscrireFormateur(@RequestBody Formateur formateur) {
-		formateur.setPassword(passwordEncoder.encode(formateur.getPassword()));
-		Formateur inscritFormateur = formateurService.inscrireFormateur(formateur);
-     
-		return new ResponseEntity<>(inscritFormateur, HttpStatus.CREATED);
-	}
-	 @GetMapping("/api/fuser/all")
-	 @PreAuthorize("hasRole('ROLE_ADMIN')")
-	    public ResponseEntity<List<Formateur>> getAllFormateurs() {
-	        List<Formateur> allFormateurs = formateurService.getAllFormateurs();
-	        return new ResponseEntity<>(allFormateurs, HttpStatus.OK);
-	    }
-	
+    @Autowired
+    private FormateurService formateurService;
+    private static final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-	 	@PutMapping("/api/fuser/accepter/{formateurId}")
-	    @PreAuthorize("hasRole('ROLE_ADMIN')")
-	    public ResponseEntity<Formateur> accepterFormateur(@PathVariable Long formateurId) {
-	        try {
-	            Formateur formateurAccepte = formateurService.acceptFormateur(formateurId);
-	            return new ResponseEntity<>(formateurAccepte, HttpStatus.OK);
-	        } catch (Exception e) {
-	            e.printStackTrace(); 
-	            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-	        }
-	    }
+    @PostMapping("/inscrire")
+    public ResponseEntity<Formateur> inscrireFormateur(@RequestBody Formateur formateur) {
+        formateur.setPassword(passwordEncoder.encode(formateur.getPassword()));
+        Formateur inscritFormateur = formateurService.inscrireFormateur(formateur);
+        return ResponseEntity.ok(inscritFormateur);
+    }
 
-	 	@DeleteMapping("/api/fuser/refuser/{formateurId}")
-	    @PreAuthorize("hasRole('ROLE_ADMIN')")
-	    public ResponseEntity<Void> refuserFormateur(@PathVariable Long formateurId) {
-	        try {
-	            formateurService.refuseFormateur(formateurId);
-	            return new ResponseEntity<>(HttpStatus.OK);
-	        } catch (Exception e) {
-	            e.printStackTrace(); 
-	            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-	        }
-	    }
+    @GetMapping("/api/fuser/all")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<List<Formateur>> getAllFormateurs() {
+        List<Formateur> allFormateurs = formateurService.getAllFormateurs();
+        return ResponseEntity.ok(allFormateurs);
+    }
+
+    @PutMapping("/api/fuser/accepter/{formateurId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<Formateur> accepterFormateur(@PathVariable Long formateurId) {
+        try {
+            Formateur formateurAccepte = formateurService.acceptFormateur(formateurId);
+            return ResponseEntity.ok(formateurAccepte);
+        } catch (Exception e) {
+        	e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @DeleteMapping("/api/fuser/refuser/{formateurId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<Void> refuserFormateur(@PathVariable Long formateurId) {
+        try {
+            formateurService.refuseFormateur(formateurId);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            // Log the exception
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 }
 

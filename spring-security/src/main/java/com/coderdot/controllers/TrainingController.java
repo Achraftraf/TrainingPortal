@@ -68,7 +68,7 @@ public class TrainingController {
     }
 
     @GetMapping("/api/trainingsforall/all")
-//    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_ASSISTANT')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_ASSISTANT') or hasRole('ROLE_USER') or  hasRole('ROLE_FORMATEUR')")
     public ResponseEntity<List<Training>> getAllTrainings() {
         List<Training> allTrainings = trainingService.getAllTrainings();
         return new ResponseEntity<>(allTrainings, HttpStatus.OK);
@@ -147,6 +147,17 @@ public class TrainingController {
 //
 //    
     
+    @GetMapping("/api/trainings/filtered")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<List<Training>> getFilteredTrainings(
+        @RequestParam(required = false) String category,
+        @RequestParam(required = false) String city,
+        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+        List<Training> filteredTrainings = trainingService.getFilteredTrainings(category, city, date);
+        return new ResponseEntity<>(filteredTrainings, HttpStatus.OK);
+    }
+
+    
 //    @PostMapping("/schedule")
 //    @PreAuthorize("hasRole('ROLE_ADMIN')")
 //    public ResponseEntity<String> scheduleTraining(
@@ -191,14 +202,18 @@ public class TrainingController {
     }
     
     
-    @PutMapping("/api/trainings/{id}/register")
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PutMapping("/register-training/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_ASSISTANT') or hasRole('ROLE_USER')")
     public ResponseEntity<String> registerForTraining(@PathVariable Long id, @RequestBody TrainingParticipant participant) {
         try {
             Optional<Training> optionalTraining = trainingService.getTrainingById(id);
             if (optionalTraining.isPresent()) {
                 Training training = optionalTraining.get();
                 List<TrainingParticipant> participants = training.getParticipants();
+
+                // Set the reference to the Training entity in the TrainingParticipant
+                participant.setTraining(training);
+
                 participants.add(participant);
                 training.setParticipants(participants);
                 trainingRepository.save(training);
