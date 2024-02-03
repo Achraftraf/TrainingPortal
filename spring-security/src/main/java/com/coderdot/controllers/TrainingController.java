@@ -7,7 +7,9 @@
 	import com.coderdot.repository.TrainingRepository;
 	
 	import java.time.LocalDate;
-	import java.util.List;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 	
@@ -258,18 +260,23 @@ import java.util.Optional;
 
 	    @PutMapping("/api/trainings/associate-formateur/{trainingId}/{formateurId}")
 	    @PreAuthorize("hasRole('ROLE_ADMIN')")
-	    public ResponseEntity<String> associateFormateurToTraining(
+	    public ResponseEntity<Map<String, Object>> associateFormateurToTraining(
 	            @PathVariable Long trainingId,
-	            @PathVariable Long formateurId) {
+	            @PathVariable Long formateurId,
+	            @RequestBody Map<String, Long> requestBody) {
+	        Long participantId = requestBody.get("participantId");
 	        try {
-	            trainingService.associateFormateurToTraining(trainingId, formateurId);
-	            return ResponseEntity.ok("Formateur associated successfully with the training.");
+	            trainingService.associateFormateurToTraining(trainingId, formateurId, participantId);
+	            Map<String, Object> response = new HashMap<>();
+	            response.put("message", "Formateur associated successfully with the training.");
+	            response.put("participantId", participantId);
+	            return ResponseEntity.ok(response);
 	        } catch (IllegalArgumentException e) {
-	            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+	            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.singletonMap("error", e.getMessage()));
 	        } catch (Exception e) {
 	            e.printStackTrace();
-	            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.singletonMap("error", "Internal Server Error"));
 	        }
 	    }
-	    // Additional endpoints as needed
+
 	}
