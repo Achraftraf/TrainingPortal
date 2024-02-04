@@ -4,8 +4,8 @@ TrainingPortal : A Spring Boot and Angular-powered platform for streamlined trai
 
 ## Front End Repository
 
-[Front End Repository]([link-to-front-end-repo](https://github.com/Achraftraf/TrainingPortal_front_end.git))
+[Front End Repository](https://github.com/Achraftraf/TrainingPortal_front_end.git)
 
 ## Back End Repository
 
-[Back End Repository]([link-to-back-end-repo](https://github.com/Achraftraf/TrainingPortal.git)https://github.com/Achraftraf/TrainingPortal.git)
+[Back End Repository](https://github.com/Achraftraf/TrainingPortal.git)
